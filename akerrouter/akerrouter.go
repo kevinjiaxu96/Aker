@@ -1,6 +1,8 @@
 package akerrouter
 
 import (
+	"log"
+
 	"github.com/kevinjiaxu96/Aker/aker"
 )
 
@@ -45,26 +47,29 @@ func (r *router) Delete(path string, callback func(aker.Contex)) {
 }
 
 func (r router) Routes(ctx aker.Contex, next func()) {
-	if ctx.Request.Method == "GET" {
+	switch ctx.Request.Method {
+	case "GET":
 		tmp, exist := r.getRequest[ctx.Request.URL.Path]
 		if exist == true {
 			tmp(ctx)
 		}
-	} else if ctx.Request.Method == "POST" {
+	case "POST":
 		tmp, exist := r.postRequest[ctx.Request.URL.Path]
 		if exist == true {
 			tmp(ctx)
 		}
-	} else if ctx.Request.Method == "PUT" {
+	case "PUT":
 		tmp, exist := r.putRequest[ctx.Request.URL.Path]
 		if exist == true {
 			tmp(ctx)
 		}
-	} else if ctx.Request.Method == "DELETE" {
+	case "DELETE":
 		tmp, exist := r.deleteRequest[ctx.Request.URL.Path]
 		if exist == true {
 			tmp(ctx)
 		}
+	default:
+		log.Println("warning: Method not supported.")
 	}
 	next()
 }
