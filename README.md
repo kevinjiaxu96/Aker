@@ -13,7 +13,7 @@ type Contex struct {
 
 ## How to write a Aker Middleware
 ```
-func Foo(ctx aker.Contex, next func(aker.Contex)) {
+func Foo(ctx aker.Contex, next func()) {
 	//middleware logic
 	next() //invoke next middleware, must be called or chain will stop here
 }
