@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/kevinjiaxu96/Aker/aker"
-	"github.com/kevinjiaxu96/Aker/akerrouter"
+	"../aker"
+	"../akerrouter"
 )
 
 // A -> first test middleware
@@ -74,5 +74,5 @@ func main() {
 	// test.Use(B)
 	// test.Use(C)
 	//test.Use(router.Routes)
-	test.Listen(8080, nil)
+	test.Listen(3002, nil)
 }

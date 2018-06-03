@@ -42,7 +42,7 @@ func (m *Middlewares) Callback() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		//fmt.Println(len(m.chain))
 		if len(m.chain) > 0 {
-			m.ctx = Contex{Response: w, Request: r}
+			m.ctx = Contex{Response: w, Request: r, responded: false}
 			m.next()
 			// firstMiddleware(Contex{ //invoke the first middleware
 			// 	Response: w,
@@ -54,7 +54,7 @@ func (m *Middlewares) Callback() http.Handler {
 
 // next -> function to call the next middleware
 func (m *Middlewares) next() {
-	if m.ctx.responded != false {
+	if m.ctx.responded == false {
 		if m.index < (len(m.chain)) { //check if the next middleware exist
 			nextMiddleware := m.chain[m.index].(func(ctx Contex, next func())) // cast empty interface back to function
 			m.index = m.index + 1
