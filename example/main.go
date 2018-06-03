@@ -71,8 +71,8 @@ func main() {
 		fmt.Println("Nice butts!")
 	})
 	test.Use(A)
-	test.Use(B)
-	test.Use(C)
-	test.Use(router.Routes)
+	// test.Use(B)
+	// test.Use(C)
+	//test.Use(router.Routes)
 	test.Listen(8080, nil)
 }

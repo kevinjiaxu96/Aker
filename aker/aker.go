@@ -53,7 +53,7 @@ func (m *Middlewares) Callback() http.Handler {
 
 // next -> function to call the next middleware
 func (m *Middlewares) next() {
-	if m.index < (len(m.chain) - 1) { //check if the next middleware exist
+	if m.index < (len(m.chain)) { //check if the next middleware exist
 		nextMiddleware := m.chain[m.index].(func(ctx Contex, next func())) // cast empty interface back to function
 		m.index = m.index + 1
 		nextMiddleware(m.ctx, m.next) //invoke next middleware
