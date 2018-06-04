@@ -30,7 +30,7 @@ func Instance() Middlewares {
 }
 
 // Use -> add middleware to the chain
-func (m *Middlewares) Use(callback func(ctx Contex, next func())) {
+func (m *Middlewares) Use(callback func(ctx *Contex, next func())) {
 	if callback != nil { //check if middleware is nil
 		m.chain = append(m.chain, callback)
 	}
