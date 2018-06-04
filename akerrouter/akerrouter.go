@@ -46,27 +46,27 @@ func (r *router) Delete(path string, callback func(*aker.Contex)) {
 	r.deleteRequest[path] = callback
 }
 
-func (r router) Routes(ctx aker.Contex, next func()) {
+func (r router) Routes(ctx *aker.Contex, next func()) {
 	switch ctx.Request.Method {
 	case "GET":
 		tmp, exist := r.getRequest[ctx.Request.URL.Path]
 		if exist == true {
-			tmp(&ctx)
+			tmp(ctx)
 		}
 	case "POST":
 		tmp, exist := r.postRequest[ctx.Request.URL.Path]
 		if exist == true {
-			tmp(&ctx)
+			tmp(ctx)
 		}
 	case "PUT":
 		tmp, exist := r.putRequest[ctx.Request.URL.Path]
 		if exist == true {
-			tmp(&ctx)
+			tmp(ctx)
 		}
 	case "DELETE":
 		tmp, exist := r.deleteRequest[ctx.Request.URL.Path]
 		if exist == true {
-			tmp(&ctx)
+			tmp(ctx)
 		}
 	default:
 		log.Println("warning: Method not supported.")
