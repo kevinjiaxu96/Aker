@@ -56,9 +56,9 @@ func (m *Middlewares) Callback() http.Handler {
 func (m *Middlewares) next() {
 	if m.ctx.Responded == false {
 		if m.index < (len(m.chain)) { //check if the next middleware exist
-			nextMiddleware := m.chain[m.index].(func(ctx Contex, next func())) // cast empty interface back to function
+			nextMiddleware := m.chain[m.index].(func(ctx *Contex, next func())) // cast empty interface back to function
 			m.index = m.index + 1
-			nextMiddleware(m.ctx, m.next) //invoke next middleware
+			nextMiddleware(&m.ctx, m.next) //invoke next middleware
 		} else {
 			m.index = 0 //if this is the final call to next, reset back to first
 		}
