@@ -67,6 +67,10 @@ func (m *Middlewares) next() {
 	}
 }
 
+func (m *Middlewares) End() {
+	m.index = 0
+}
+
 // Listen -> function to start a http server
 // and invoke callback through goroutine
 func (m Middlewares) Listen(PORT int, CALLBACK func()) {
