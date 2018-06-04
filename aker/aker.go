@@ -13,7 +13,7 @@ import (
 type Contex struct {
 	Response  http.ResponseWriter // Sugar for ResponseWriter
 	Request   *http.Request       // Sugar for Request
-	responded bool
+	Responded bool
 }
 
 // Middlewares -> Middleware structrue holding the chain of middlewares
@@ -42,7 +42,7 @@ func (m *Middlewares) Callback() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		//fmt.Println(len(m.chain))
 		if len(m.chain) > 0 {
-			m.ctx = Contex{Response: w, Request: r, responded: false}
+			m.ctx = Contex{Response: w, Request: r, Responded: false}
 			m.next()
 			// firstMiddleware(Contex{ //invoke the first middleware
 			// 	Response: w,
@@ -54,7 +54,7 @@ func (m *Middlewares) Callback() http.Handler {
 
 // next -> function to call the next middleware
 func (m *Middlewares) next() {
-	if m.ctx.responded == false {
+	if m.ctx.Responded == false {
 		if m.index < (len(m.chain)) { //check if the next middleware exist
 			nextMiddleware := m.chain[m.index].(func(ctx Contex, next func())) // cast empty interface back to function
 			m.index = m.index + 1
@@ -65,10 +65,6 @@ func (m *Middlewares) next() {
 	} else {
 		m.index = 0
 	}
-}
-
-func (m *Middlewares) End() {
-	m.index = 0
 }
 
 // Listen -> function to start a http server
@@ -86,7 +82,7 @@ func (m Middlewares) Listen(PORT int, CALLBACK func()) {
 // JSON -> function to start a http server
 // and invoke callback through goroutine
 func (ctx *Contex) JSON(data []byte) {
-	ctx.responded = true
+	ctx.Responded = true
 	ctx.Response.Header().Set("Content-Type", "application/json")
 	ctx.Response.Write(data)
 }

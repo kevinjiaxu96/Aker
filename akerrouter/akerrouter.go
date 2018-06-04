@@ -7,10 +7,10 @@ import (
 )
 
 type router struct {
-	getRequest    map[string]func(aker.Contex)
-	postRequest   map[string]func(aker.Contex)
-	putRequest    map[string]func(aker.Contex)
-	deleteRequest map[string]func(aker.Contex)
+	getRequest    map[string]func(*aker.Contex)
+	postRequest   map[string]func(*aker.Contex)
+	putRequest    map[string]func(*aker.Contex)
+	deleteRequest map[string]func(*aker.Contex)
 }
 
 func Instance() router {
@@ -18,30 +18,30 @@ func Instance() router {
 	return tmp
 }
 
-func (r *router) Get(path string, callback func(aker.Contex)) {
+func (r *router) Get(path string, callback func(*aker.Contex)) {
 	if r.getRequest == nil {
-		r.getRequest = make(map[string]func(aker.Contex))
+		r.getRequest = make(map[string]func(*aker.Contex))
 	}
 	r.getRequest[path] = callback
 }
 
-func (r *router) Post(path string, callback func(aker.Contex)) {
+func (r *router) Post(path string, callback func(*aker.Contex)) {
 	if r.postRequest == nil {
-		r.postRequest = make(map[string]func(aker.Contex))
+		r.postRequest = make(map[string]func(*aker.Contex))
 	}
 	r.postRequest[path] = callback
 }
 
-func (r *router) Put(path string, callback func(aker.Contex)) {
+func (r *router) Put(path string, callback func(*aker.Contex)) {
 	if r.putRequest == nil {
-		r.putRequest = make(map[string]func(aker.Contex))
+		r.putRequest = make(map[string]func(*aker.Contex))
 	}
 	r.putRequest[path] = callback
 }
 
-func (r *router) Delete(path string, callback func(aker.Contex)) {
+func (r *router) Delete(path string, callback func(*aker.Contex)) {
 	if r.deleteRequest == nil {
-		r.deleteRequest = make(map[string]func(aker.Contex))
+		r.deleteRequest = make(map[string]func(*aker.Contex))
 	}
 	r.deleteRequest[path] = callback
 }
@@ -51,22 +51,22 @@ func (r router) Routes(ctx aker.Contex, next func()) {
 	case "GET":
 		tmp, exist := r.getRequest[ctx.Request.URL.Path]
 		if exist == true {
-			tmp(ctx)
+			tmp(&ctx)
 		}
 	case "POST":
 		tmp, exist := r.postRequest[ctx.Request.URL.Path]
 		if exist == true {
-			tmp(ctx)
+			tmp(&ctx)
 		}
 	case "PUT":
 		tmp, exist := r.putRequest[ctx.Request.URL.Path]
 		if exist == true {
-			tmp(ctx)
+			tmp(&ctx)
 		}
 	case "DELETE":
 		tmp, exist := r.deleteRequest[ctx.Request.URL.Path]
 		if exist == true {
-			tmp(ctx)
+			tmp(&ctx)
 		}
 	default:
 		log.Println("warning: Method not supported.")
